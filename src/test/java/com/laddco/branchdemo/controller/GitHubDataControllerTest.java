@@ -87,4 +87,10 @@ class GitHubDataControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(errorBody));
     }
+
+    @Test
+    void getGitHubData_blankUsername_returns400() throws Exception {
+        mockMvc.perform(get("/github-data").param("username", "   "))
+                .andExpect(status().isBadRequest());
+    }
 }
