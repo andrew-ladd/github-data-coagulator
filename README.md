@@ -3,7 +3,7 @@
 A simple spring boot app that fetches github user data and repos to combine the essential information into one response.
 
 ## Prerequisites
-- Java 21 (I recommend using [sdkman](https://sdkman.io/) to install it)
+- Java 21 (I recommend using [sdkman](https://sdkman.io/) to install your favorite flavor) 
 
 ## Running the Application
 From repository root
