@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
@@ -44,6 +45,10 @@ public class GitHubDataService {
             throw new GitHubDataException(e.getStatusCode(), e.getResponseBodyAsString());
         }
 
+        if (user == null) {
+            throw new GitHubDataException(HttpStatus.BAD_GATEWAY, "Received null response from GitHub API");
+        }
+
         List<GitHubRepoResponse> repos;
         try {
             repos = restClient.get()
@@ -53,6 +58,10 @@ public class GitHubDataService {
         } catch (RestClientResponseException e) {
             log.error("Failed to fetch repos for {}: {} {}", username, e.getStatusCode(), e.getResponseBodyAsString());
             throw new GitHubDataException(e.getStatusCode(), e.getResponseBodyAsString());
+        }
+
+        if (repos == null) {
+            repos = List.of();
         }
 
         log.trace("Successfully fetched data for user: {}", username);
